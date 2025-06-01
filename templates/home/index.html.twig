@@ -83,7 +83,14 @@
             <a href="#">Modellen</a>
             <a href="#">Contact</a>
             <a href="#">BMW Helpbot</a>
-            <a href="#" class="btn">Aanmelden</a>
+
+            {% if app.user %}
+                <span>Ingelogd als: {{ app.user.email }}</span>
+                <a href="{{ path('app_logout') }}" class="btn">Uitloggen</a>
+            {% else %}
+                <a href="{{ path('app_register') }}" class="btn">Aanmelden</a>
+                <a href="{{ path('app_login') }}" class="btn">Inloggen</a>
+            {% endif %}
         </nav>
     </div>
 
