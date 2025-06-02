@@ -1,43 +1,105 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Car index{% endblock %}
+{% block title %}Onze modellen{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            background-image: url("{{ asset('images/carbonwallpaper.png') }}");
+        }
+
+        .catalog-header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .filter-buttons button {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #888;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        .filter-buttons button:hover {
+            background-color: #555;
+        }
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .car-card {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .car-card img {
+            width: 100%;
+            max-height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #aaa;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <h1>Car index</h1>
+    {% if is_granted('ROLE_BEHEERDER') %}
+        <div style="text-align: center; margin: 20px 0;">
+            <a href="{{ path('app_car_new') }}" class="btn" style="background:#28a745; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">
+                ➕ Voeg een nieuwe auto toe
+            </a>
+        </div>
+    {% endif %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Model</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="catalog-header">
+        <h1>Onze modellen</h1>
+        <p>Ontdek ons gevarieerde aanbod merken en modellen en vind de door u gewenste</p>
+    </div>
+
+    <div class="filter-buttons">
+        <a href="{{ path('app_car_index') }}"><button{% if not activeFilter %} style="background-color:#555;"{% endif %}>Alle modellen</button></a>
+        <a href="{{ path('app_car_index', {'category': 'BMW'}) }}"><button{% if activeFilter == 'BMW' %} style="background-color:#555;"{% endif %}>BMW</button></a>
+        <a href="{{ path('app_car_index', {'category': 'BMW I'}) }}"><button{% if activeFilter == 'BMW I' %} style="background-color:#555;"{% endif %}>BMW I</button></a>
+        <a href="{{ path('app_car_index', {'category': 'BMW M'}) }}"><button{% if activeFilter == 'BMW M' %} style="background-color:#555;"{% endif %}>BMW M</button></a>
+    </div>
+
+
+    <div class="car-grid">
         {% for car in cars %}
-            <tr>
-                <td>{{ car.id }}</td>
-                <td>{{ car.model }}</td>
-                <td>{{ car.price }}</td>
-                <td>{{ car.stock }}</td>
-                <td>{{ car.description }}</td>
-                <td>{{ car.image }}</td>
-                <td>
-                    <a href="{{ path('app_car_show', {'id': car.id}) }}">show</a>
-                    <a href="{{ path('app_car_edit', {'id': car.id}) }}">edit</a>
-                </td>
-            </tr>
+            <div class="car-card">
+                {% if car.image %}
+                    <img src="{{ asset('uploads/' ~ car.image) }}" alt="{{ car.model }}">
+                {% else %}
+                    <img src="{{ asset('images/default-car.png') }}" alt="Geen afbeelding">
+                {% endif %}
+                <h3>{{ car.model }}</h3>
+                <p style="font-size: 0.9em; color: #bbb;">{{ car.category.name }}</p>
+            </div>
         {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
+            <p style="text-align: center;">Er zijn nog geen modellen beschikbaar.</p>
         {% endfor %}
-        </tbody>
-    </table>
+    </div>
 
-    <a href="{{ path('app_car_new') }}">Create new</a>
+    <footer>
+        © {{ "now"|date("Y") }}. BMW Nederland B.V. Alle rechten voorbehouden (collectie)
+    </footer>
 {% endblock %}

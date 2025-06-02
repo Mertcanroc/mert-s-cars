@@ -7,6 +7,7 @@ use App\Form\CarType;
 use App\Repository\CarRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,10 +16,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class CarController extends AbstractController
 {
     #[Route('/', name: 'app_car_index', methods: ['GET'])]
-    public function index(CarRepository $carRepository): Response
+    public function index(Request $request, CarRepository $carRepository, EntityManagerInterface $entityManager): Response
     {
+        $filter = $request->query->get('category');
+
+        if ($filter) {
+            $cars = $entityManager->createQuery(
+                'SELECT c FROM App\Entity\Car c
+             JOIN c.category cat
+             WHERE cat.name = :categoryName'
+            )->setParameter('categoryName', $filter)
+                ->getResult();
+        } else {
+            $cars = $carRepository->findAll();
+        }
         return $this->render('car/index.html.twig', [
-            'cars' => $carRepository->findAll(),
+            'cars' => $cars,
+            'activeFilter' => $filter,
         ]);
     }
 
@@ -30,12 +44,29 @@ class CarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('imageFile')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/uploads',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle exception if needed (log it or show a message)
+                }
+
+                $car->setImage($newFilename);
+            }
+
             $entityManager->persist($car);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_car_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('car/new.html.twig', [
             'car' => $car,
             'form' => $form,
@@ -57,9 +88,26 @@ class CarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('imageFile')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/uploads',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle upload error
+                }
+
+                $car->setImage($newFilename);
+            }
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_car_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_car_index');
         }
 
         return $this->render('car/edit.html.twig', [

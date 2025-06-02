@@ -15,6 +15,40 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    <style>
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .navbar {
+            animation: fadeIn 1.2s ease-in-out forwards;
+            opacity: 0;
+            animation-delay: 0.1s;
+        }
+
+    </style>
+    <div class="navbar">
+        <div class="logo">
+            <img src="{{ asset('images/bmw-logo.png') }}" alt="BMW Logo">
+        </div>
+        <nav>
+            <a href="{{ path('app_car_index') }}">Modellen</a>
+            <a href="#">Contact</a>
+            <a href="#">BMW Helpbot</a>
+
+            {% if app.user %}
+                <span>Ingelogd als: {{ app.user.email }}</span>
+                <a href="{{ path('app_logout') }}" class="btn">Uitloggen</a>
+            {% else %}
+                <a href="{{ path('app_register') }}" class="btn">Aanmelden</a>
+                <a href="{{ path('app_login') }}" class="btn">Inloggen</a>
+            {% endif %}
+        </nav>
+    </div>
+        {% block body %}
+
+        {% endblock %}
     </body>
 </html>
