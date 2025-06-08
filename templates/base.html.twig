@@ -28,6 +28,15 @@
             animation-delay: 0.1s;
         }
 
+            body {
+                background-color: #111;
+                color: #fff;
+                font-family: Arial, sans-serif;
+                background-image: url("{{ asset('images/bgwallpaper.jpg') }}");
+            }
+
+
+
     </style>
     <div class="navbar">
         <div class="logo">
@@ -49,6 +58,12 @@
             {% endif %}
         </nav>
     </div>
+
+    <footer class="footer">
+        <p>Bedrijfslocatie op map | Mail | Telefoonnummer</p>
+        <a href="#">Schrijf je in voor onze nieuwsbrief</a><br>
+        <small>© 2025 BMW Nederland B.V. Alle rechten voorbehouden. (colofon)</small>
+    </footer>
         {% block body %}
 
         {% endblock %}

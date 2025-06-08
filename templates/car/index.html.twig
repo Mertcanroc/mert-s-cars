@@ -4,12 +4,7 @@
 
 {% block stylesheets %}
     <style>
-        body {
-            background-color: #111;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            background-image: url("{{ asset('images/carbonwallpaper.png') }}");
-        }
+
 
         .catalog-header {
             text-align: center;
@@ -58,13 +53,17 @@
             border-top: 1px solid #333;
             margin-top: 40px;
         }
+        .narrow-button {
+            width: auto;
+            padding: 10px 15px;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
     {% if is_granted('ROLE_BEHEERDER') %}
         <div style="text-align: center; margin: 20px 0;">
-            <a href="{{ path('app_car_new') }}" class="btn" style="background:#28a745; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">
+            <a href="{{ path('app_car_new') }}" class="btn bg-success" style="background:#28a745; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">
                 ➕ Voeg een nieuwe auto toe
             </a>
         </div>
@@ -82,8 +81,7 @@
         <a href="{{ path('app_car_index', {'category': 'BMW M'}) }}"><button{% if activeFilter == 'BMW M' %} style="background-color:#555;"{% endif %}>BMW M</button></a>
     </div>
 
-
-    <div class="car-grid">
+    <div class="car-grid mb-5">
         {% for car in cars %}
             <div class="car-card">
                 {% if car.image %}
@@ -92,14 +90,24 @@
                     <img src="{{ asset('images/default-car.png') }}" alt="Geen afbeelding">
                 {% endif %}
                 <h3>{{ car.model }}</h3>
+                <h6> Vanaf € {{ car.price }}</h6>
+                <p class="text-info"> Op voorraad: {{ car.stock }}</p>
                 <p style="font-size: 0.9em; color: #bbb;">{{ car.category.name }}</p>
+                <a href="{{ path('app_car_show', {'id': car.id}) }}" class="btn" style="background:#007bff; color:white; padding:6px 15px; margin-top:10px; display:inline-block;">
+                    Aanschaffen
+                </a>
+
+                {% if is_granted('ROLE_BEHEERDER') %}
+                    <a href="{{ path('app_car_edit', {'id': car.id}) }}" class="btn bg-success narrow-button text-white">✏️ Bewerken</a>
+                    {{ include('car/_delete_form.html.twig') }}
+                {% endif %}
             </div>
         {% else %}
             <p style="text-align: center;">Er zijn nog geen modellen beschikbaar.</p>
         {% endfor %}
     </div>
 
-    <footer>
-        © {{ "now"|date("Y") }}. BMW Nederland B.V. Alle rechten voorbehouden (collectie)
-    </footer>
+<footer>
+
+</footer>
 {% endblock %}
