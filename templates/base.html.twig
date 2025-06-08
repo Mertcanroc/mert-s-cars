@@ -31,15 +31,17 @@
     </style>
     <div class="navbar">
         <div class="logo">
+            <a href="{{ path('app_home') }}">
             <img src="{{ asset('images/bmw-logo.png') }}" alt="BMW Logo">
+            </a>
         </div>
         <nav>
             <a href="{{ path('app_car_index') }}">Modellen</a>
-            <a href="#">Contact</a>
-            <a href="#">BMW Helpbot</a>
+            <a href=" {{ path('app_contact') }}">Contact</a>
+            <a href="">BMW Helpbot</a>
 
             {% if app.user %}
-                <span>Ingelogd als: {{ app.user.email }}</span>
+                <span class="text-info">Ingelogd als: {{ app.user.email }}</span>
                 <a href="{{ path('app_logout') }}" class="btn">Uitloggen</a>
             {% else %}
                 <a href="{{ path('app_register') }}" class="btn">Aanmelden</a>
