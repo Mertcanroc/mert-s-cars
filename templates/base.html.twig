@@ -34,8 +34,10 @@
                 font-family: Arial, sans-serif;
                 background-image: url("{{ asset('images/bgwallpaper.jpg') }}");
             }
-
-
+            .btn {
+                background-color: #9c47ea;
+                color: #F5F5F5;
+            }
 
     </style>
     <div class="navbar">
@@ -47,7 +49,8 @@
         <nav>
             <a href="{{ path('app_car_index') }}">Modellen</a>
             <a href=" {{ path('app_contact') }}">Contact</a>
-            <a href="">BMW Helpbot</a>
+            <a href="{{ path('app_helpbot') }}">BMW Helpbot</a>
+            <a href="{{ path('app_appointment_book') }}">Boek een afspraak</a>
 
             {% if app.user %}
                 <span class="text-info">Ingelogd als: {{ app.user.email }}</span>

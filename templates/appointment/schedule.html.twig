@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schema afspraken{% endblock %}
+
+{% block body %}
+
+    <h1>Week schema afspraken</h1>
+
+    <table border="1" style="border-collapse: collapse; width: 100%;">
+        <thead>
+        <tr>
+            <th>Uur</th>
+            {% for i in 0..4 %}
+                {% set day = startOfWeek|date_modify("+" ~ i ~ " days") %}
+                <th>{{ day|date('D d-m') }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for hour in 10..17 %}
+            <tr>
+                <td>{{ "%02d:00"|format(hour) }}</td>
+                {% for i in 0..4 %}
+                    {% set day = startOfWeek|date_modify("+" ~ i ~ " days") %}
+                    {% set cellDateTime = day|date_modify(hour ~ ':00:00') %}
+
+                    <td style="position: relative; height: 50px;">
+
+                        {% for appointment in appointments %}
+                            {% set start = appointment.startTime %}
+                            {% set end = appointment.endTime %}
+
+                            {# Check of deze afspraak valt binnen deze dag en dit uur #}
+                            {% if start|date('Y-m-d') == day|date('Y-m-d')
+                                and start|date('H') == hour %}
+
+                                {# Bereken duur in uren #}
+                                {% set duration = (end.getTimestamp() - start.getTimestamp()) / 3600 %}
+
+                                <div style="position: absolute; top: 0; left: 0;
+                                        width: 100%; height: {{ duration * 50 }}px;
+                                        background-color: #4CAF50; color: white;
+                                        padding: 2px; box-sizing: border-box;">
+                                    {{ appointment.appointmentType }}<br>
+                                    {{ start|date('H:i') }} - {{ end|date('H:i') }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_appointment_book') }}" class="btn mt-5">Ga terug naar afspraken</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+<h1>Afspraak beheer</h1>
+
+{% for appointment in appointments %}
+    <div>
+        <strong>{{ appointment.user.email }}</strong> - {{ appointment.appointmentType }} op {{ appointment.startTime|date('d-m-Y H:i') }}
+        <a href="{{ path('appointment_approve', {id: appointment.id}) }}">Goedkeuren</a>
+        <a href="{{ path('appointment_reject', {id: appointment.id}) }}">Afwijzen</a>
+    </div>
+{% else %}
+    <p>Geen openstaande afspraken.</p>
+{% endfor %}

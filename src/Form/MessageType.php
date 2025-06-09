@@ -8,21 +8,25 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 
 class MessageType extends AbstractType
 {
+
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('message')
-            ->add('botResponse')
-            ->add('timestamp')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
-            ])
-        ;
+            ->add('message', TextareaType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Typ iets...',
+                    'rows' => 2
+                ]
+            ]);
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

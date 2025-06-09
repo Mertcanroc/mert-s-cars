@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Afspraak maken{% endblock %}
+
+{% block body %}
+
+    <style>
+    .btn {
+        background-color: #9c47ea;
+    }
+    </style>
+    <div class="container my-5">
+        <h1 class="mb-4">Maak een afspraak</h1>
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.appointmentType, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.appointmentType, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.appointmentType) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.startTime, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.startTime, {'attr': {'class': 'form-control js-datepicker'}}) }}
+            {{ form_errors(form.startTime) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Boek afspraak</button>
+        <a href="{{ path('app_appointment_schedule') }}" class="btn btn-secondary ms-2">Bekijk schema</a>
+
+        {{ form_end(form) }}
+
+        {# jQuery UI voor datepicker, alleen als je het echt nodig hebt #}
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+        <script>
+            $(function () {
+                $('.js-datepicker').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    minDate: 0,
+                    beforeShowDay: $.datepicker.noWeekends,  // alleen maandag t/m vrijdag
+                });
+            });
+        </script>
+    </div>
+{% endblock %}
