@@ -17,10 +17,10 @@ class AppointmentTypeFormType extends AbstractType
         $builder
             ->add('appointmentType', ChoiceType::class, [
                 'choices' => [
-                    'Auto aanschaf afspraak' => Appointment::TYPE_AUTO_AANSCHAF,
-                    'Onderhoud' => Appointment::TYPE_ONDERHOUD,
-                    'Reparatie' => Appointment::TYPE_REPARATIE,
-                    'BMW M upgrade' => Appointment::TYPE_BMW_M_UPGRADE,
+                    'Auto aanschaf afspraak (1 uur)' => Appointment::TYPE_AUTO_AANSCHAF,
+                    'Onderhoud (2 uur)' => Appointment::TYPE_ONDERHOUD,
+                    'Reparatie (3 uur)' => Appointment::TYPE_REPARATIE,
+                    'BMW M upgrade (4 uur)' => Appointment::TYPE_BMW_M_UPGRADE,
                 ],
                 'placeholder' => 'Kies een type afspraak',
                 'label' => 'Type afspraak',

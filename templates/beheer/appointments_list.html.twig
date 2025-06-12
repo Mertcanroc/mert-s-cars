@@ -1,5 +1,7 @@
-<h1>Afspraak beheer</h1>
+{% extends 'base.html.twig' %}
+{% block title %}Afspraak beheer{% endblock %}
 
+{% block body %}
 {% for appointment in appointments %}
     <div>
         <strong>{{ appointment.user.email }}</strong> - {{ appointment.appointmentType }} op {{ appointment.startTime|date('d-m-Y H:i') }}
@@ -9,3 +11,6 @@
 {% else %}
     <p>Geen openstaande afspraken.</p>
 {% endfor %}
+<a href="{{ path('app_appointment_book') }}" class="btn bg-success mt-5">Terug naar afspraken</a>
+{% endblock %}
+

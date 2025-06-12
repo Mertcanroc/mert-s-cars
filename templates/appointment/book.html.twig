@@ -8,6 +8,7 @@
     .btn {
         background-color: #9c47ea;
     }
+
     </style>
     <div class="container my-5">
         <h1 class="mb-4">Maak een afspraak</h1>
@@ -45,5 +46,9 @@
                 });
             });
         </script>
+        {% if is_granted('ROLE_BEHEERDER') %}
+            <a href="{{ path('beheer_appointments_list') }}" class="btn bg-success mt-5" style="margin-right: 500px">Afspraken beheren</a>
+        {% endif %}
     </div>
+
 {% endblock %}
