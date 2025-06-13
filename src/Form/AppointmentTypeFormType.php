@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\Appointment;
@@ -25,20 +24,18 @@ class AppointmentTypeFormType extends AbstractType
                 'placeholder' => 'Kies een type afspraak',
                 'label' => 'Type afspraak',
             ])
-            ->add('startTime', DateType::class, [
+            ->add('date', DateType::class, [
                 'label' => 'Datum',
                 'widget' => 'single_text',
-                'html5' => false,
-                'attr' => ['class' => 'js-datepicker'],
+                'html5' => true,
             ])
-            ->add('endTime', TimeType::class, [
+            ->add('startTime', TimeType::class, [
                 'label' => 'Begintijd',
-                'input'  => 'datetime',
-                'widget' => 'choice',
-                'hours' => range(10, 17),
-                'minutes' => [0, 15, 30, 45],
-            ])
-        ;
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'with_minutes' => true,
+                'with_seconds' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -48,4 +45,3 @@ class AppointmentTypeFormType extends AbstractType
         ]);
     }
 }
-

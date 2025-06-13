@@ -41,6 +41,10 @@ class Appointment
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endTime = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date = null;
+
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
     #[ORM\Column(length: 50)]
@@ -54,6 +58,16 @@ class Appointment
     public function setStatus(string $status): static
     {
         $this->status = $status;
+        return $this;
+    }
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): static
+    {
+        $this->date = $date;
         return $this;
     }
 

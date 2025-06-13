@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Appointment;
 use App\Form\AppointmentTypeFormType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,19 +20,29 @@ class AppointmentController extends AbstractController
     public function book(Request $request, EntityManagerInterface $em): Response
     {
         $appointment = new Appointment();
+        $appointment->setDate(new \DateTime()); // Prefill with today by default
         $form = $this->createForm(AppointmentTypeFormType::class, $appointment);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $appointment = $form->getData();
+
             // Start- en eindtijd worden direct uit het formulier gehaald
             $startDateTime = $appointment->getStartTime();
+
+            if (!$appointment->getDate()) {
+                $appointment->setDate(new \DateTime()); // Fallback if user left it empty
+            }
 
             // Bepaal duur op basis van type afspraak
             $duration = Appointment::APPOINTMENT_DURATIONS[$appointment->getAppointmentType()] ?? 60;
             $endDateTime = (clone $startDateTime)->modify("+{$duration} minutes");
-
-            $appointment->setEndTime($endDateTime);
+            // $combinedStartDate = date('Y-m-d H:i:s', strtotime("$appointment->getDate() $appointment->getStartTime()"));
+            $combinedStartDate = new DateTime($appointment->getDate()->format('Y-m-d') .' ' .$appointment->getStartTime()->format('H:i:s'));
+            $combinedEndDate = new DateTime($appointment->getDate()->format('Y-m-d') .' ' .$endDateTime->format('H:i:s'));
+            $appointment->setStartTime($combinedStartDate);
+            $appointment->setEndTime($combinedEndDate);
 
             // Check voor overlappende afspraken
             $existing = $em->getRepository(Appointment::class)->findOverlappingAppointments(
