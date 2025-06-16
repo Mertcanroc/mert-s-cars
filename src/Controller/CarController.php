@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Car;
+use App\Entity\TestDrive;
 use App\Form\CarType;
+use App\Form\TestDriveType;
 use App\Repository\CarRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -125,5 +127,34 @@ class CarController extends AbstractController
         }
 
         return $this->redirectToRoute('app_car_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/car/{id}/proefrit', name: 'car_test_drive')]
+    public function testDrive(
+        Request $request,
+        Car $car,
+        EntityManagerInterface $em
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $testDrive = new TestDrive();
+        $testDrive->setCar($car);
+        $testDrive->setUser($this->getUser());
+        $testDrive->setStatus('pending');
+
+        $form = $this->createForm(TestDriveType::class, $testDrive);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($testDrive);
+            $em->flush();
+
+            $this->addFlash('success', 'Proefrit aangevraagd!');
+            return $this->redirectToRoute('app_car_index');
+        }
+
+        return $this->render('car/test_drive.html.twig', [
+            'form' => $form->createView(),
+            'car' => $car,
+        ]);
     }
 }

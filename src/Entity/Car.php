@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CarRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +36,14 @@ class Car
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'cars')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+
+    #[ORM\OneToMany(mappedBy: 'car', targetEntity: TestDrive::class)]
+    private Collection $testDrives;
+
+    public function __construct()
+    {
+        $this->testDrives = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,6 +118,36 @@ class Car
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TestDrive>
+     */
+    public function getTestDrives(): Collection
+    {
+        return $this->testDrives;
+    }
+
+    public function addTestDrive(TestDrive $testDrive): static
+    {
+        if (!$this->testDrives->contains($testDrive)) {
+            $this->testDrives->add($testDrive);
+            $testDrive->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestDrive(TestDrive $testDrive): static
+    {
+        if ($this->testDrives->removeElement($testDrive)) {
+            // set the owning side to null (unless already changed)
+            if ($testDrive->getCar() === $this) {
+                $testDrive->setCar(null);
+            }
+        }
 
         return $this;
     }

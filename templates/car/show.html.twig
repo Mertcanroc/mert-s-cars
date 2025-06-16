@@ -16,5 +16,8 @@
         <p><strong>Beschrijving:</strong><br>{{ car.description|nl2br }}</p>
 
         <a href="{{ path('app_car_index') }}" class="btn" style="margin-top: 20px; background:#6c757d; color:white; padding:8px 16px;">⬅️ Terug naar overzicht</a>
+        <a href="{{ path('car_test_drive', {'id': car.id}) }}" class="btn btn-success mt-3">
+            Plan een proefrit
+        </a>
     </div>
 {% endblock %}

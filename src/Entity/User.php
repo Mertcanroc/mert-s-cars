@@ -40,11 +40,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Appointment::class)]
     private Collection $appointments;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TestDrive::class)]
+    private Collection $testDrives;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->contactRequests = new ArrayCollection();
         $this->appointments = new ArrayCollection();
+        $this->testDrives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,6 +205,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($appointment->getUser() === $this) {
                 $appointment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TestDrive>
+     */
+    public function getTestDrives(): Collection
+    {
+        return $this->testDrives;
+    }
+
+    public function addTestDrive(TestDrive $testDrive): static
+    {
+        if (!$this->testDrives->contains($testDrive)) {
+            $this->testDrives->add($testDrive);
+            $testDrive->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestDrive(TestDrive $testDrive): static
+    {
+        if ($this->testDrives->removeElement($testDrive)) {
+            // set the owning side to null (unless already changed)
+            if ($testDrive->getUser() === $this) {
+                $testDrive->setUser(null);
             }
         }
 

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Appointment;
+use App\Repository\TestDriveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,4 +43,16 @@ class BeheerController extends AbstractController
         $this->addFlash('success', 'Afspraak afgewezen en verwijderd.');
         return $this->redirectToRoute('beheer_appointments_list');
     }
+    #[Route('/proefritten', name: 'beheer_test_drive_list')]
+    public function testDriveList(TestDriveRepository $repository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_BEHEERDER');
+
+        $testDrives = $repository->findAll();
+
+        return $this->render('beheer/test_drive_list.html.twig', [
+            'testDrives' => $testDrives,
+        ]);
+    }
+
 }
