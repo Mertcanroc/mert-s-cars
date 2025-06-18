@@ -2,8 +2,11 @@
 namespace App\Controller;
 
 use App\Entity\Appointment;
+use App\Entity\User;
 use App\Repository\TestDriveRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,5 +57,55 @@ class BeheerController extends AbstractController
             'testDrives' => $testDrives,
         ]);
     }
+    #[Route('/gebruikers', name: 'beheer_user_list')]
+    public function userList(UserRepository $userRepository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_BEHEERDER');
 
+        return $this->render('beheer/user_list.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/gebruikers/{id}/change-role', name: 'beheer_user_change_role', methods: ['POST'])]
+    public function changeUserRole(Request $request, User $user, EntityManagerInterface $em): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_BEHEERDER');
+
+        $newRole = $request->request->get('role');
+
+        $validRoles = ['ROLE_BEHEERDER', 'ROLE_MEDEWERKER', 'ROLE_KLANT'];
+        if (!in_array($newRole, $validRoles)) {
+            $this->addFlash('danger', 'Ongeldige rol geselecteerd.');
+        } else {
+            $user->setRoles([$newRole]);
+            $em->flush();
+            $this->addFlash('success', 'Rol aangepast.');
+        }
+
+        return $this->redirectToRoute('beheer_user_list');
+    }
+    #[Route('/gebruikers/{id}/verwijder', name: 'beheer_user_delete', methods: ['POST'])]
+    public function deleteUser(User $user, EntityManagerInterface $em, Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_BEHEERDER');
+
+        // voorkomen dat je jezelf verwijdert
+        if ($user === $this->getUser()) {
+            $this->addFlash('danger', 'Je kunt je eigen account niet verwijderen.');
+            return $this->redirectToRoute('beheer_user_list');
+        }
+
+        // CSRF bescherming
+        if ($this->isCsrfTokenValid('delete-user-'.$user->getId(), $request->request->get('_token'))) {
+            $em->remove($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Gebruiker succesvol verwijderd.');
+        } else {
+            $this->addFlash('danger', 'Ongeldige CSRF token.');
+        }
+
+        return $this->redirectToRoute('beheer_user_list');
+    }
 }

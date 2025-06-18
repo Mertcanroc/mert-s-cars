@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gebruikersbeheer{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Gebruikersbeheer</h1>
+
+        <table class="table table-bordered table-dark">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Huidige rol</th>
+                <th>Actie</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles[0] }}</td>
+                    <td>
+
+                        <form method="post" action="{{ path('beheer_user_change_role', {id: user.id}) }}">
+                            <select name="role" class="form-select form-select-sm d-inline w-auto">
+                                <option value="ROLE_BEHEERDER" {{ user.roles[0] == 'ROLE_BEHEERDER' ? 'selected' : '' }}>Beheerder</option>
+                                <option value="ROLE_MEDEWERKER" {{ user.roles[0] == 'ROLE_MEDEWERKER' ? 'selected' : '' }}>Medewerker</option>
+                                <option value="ROLE_KLANT" {{ user.roles[0] == 'ROLE_KLANT' ? 'selected' : '' }}>Klant</option>
+                            </select>
+                        </form>
+                        <form method="post" action="{{ path('beheer_user_delete', { id: user.id }) }}" style="display:inline-block;" onsubmit="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');">
+                            <button class="btn btn-sm btn-primary">Opslaan</button>
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-user-' ~ user.id) }}">
+                            <button class="btn btn-sm btn-danger">Verwijder</button>
+                        </form>
+
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">Geen gebruikers gevonden.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

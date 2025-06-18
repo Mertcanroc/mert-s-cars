@@ -47,6 +47,9 @@
             </a>
         </div>
         <nav>
+            {% if is_granted('ROLE_BEHEERDER') %}
+                <a href="{{ path('beheer_user_list') }}">Gebruikersbeheer</a>
+            {% endif %}
             <a href="{{ path('app_car_index') }}">Modellen</a>
             <a href=" {{ path('app_contact') }}">Contact</a>
             <a href="{{ path('app_helpbot') }}">BMW Helpbot</a>

@@ -39,6 +39,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # Existing entries...
+        - { path: ^/beheer/gebruikers, roles: ROLE_BEHEERDER }
         - { path: ^/car/new, roles: ROLE_BEHEERDER }
         - { path: ^/car/\d+/edit, roles: ROLE_BEHEERDER }
         - { path: ^/car/\d+, roles: ROLE_BEHEERDER, methods: [ DELETE ] }
