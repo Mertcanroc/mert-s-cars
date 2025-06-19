@@ -25,7 +25,7 @@ class CarController extends AbstractController
         if ($filter) {
             $cars = $entityManager->createQuery(
                 'SELECT c FROM App\Entity\Car c
-             JOIN c.category cat
+             JOIN c.categories cat
              WHERE cat.name = :categoryName'
             )->setParameter('categoryName', $filter)
                 ->getResult();

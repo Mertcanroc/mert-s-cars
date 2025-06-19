@@ -32,10 +32,13 @@ class CarType extends AbstractType
                     ])
                 ],
             ])
-            ->add('category', EntityType::class, [
-                'class' => category::class,
-'choice_label' => 'name',
+            ->add('categories', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true, // set to false if you want a dropdown instead of checkboxes
             ])
+
         ;
     }
 

@@ -92,7 +92,13 @@
                 <h3>{{ car.model }}</h3>
                 <h6> Vanaf € {{ car.price }}</h6>
                 <p class="text-info"> Op voorraad: {{ car.stock }}</p>
-                <p style="font-size: 0.9em; color: #bbb;">{{ car.category.name }}</p>
+                <p style="font-size: 0.9em; color: #bbb;">
+                    {% if car.categories|length > 0 %}
+                        {{ car.categories[0].name }}
+                    {% else %}
+                        Geen categorie
+                    {% endif %}
+                </p>
                 <a href="{{ path('app_car_show', {'id': car.id}) }}" class="btn" style="background:#007bff; color:white; padding:6px 15px; margin-top:10px; display:inline-block;">
                     Aanschaffen
                 </a>

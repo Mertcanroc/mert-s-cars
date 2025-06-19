@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
-
 #[ORM\Entity(repositoryClass: CarRepository::class)]
 class Car
 {
@@ -33,16 +31,16 @@ class Car
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'cars')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
-
     #[ORM\OneToMany(mappedBy: 'car', targetEntity: TestDrive::class)]
     private Collection $testDrives;
+
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'cars')]
+    private Collection $categories;
 
     public function __construct()
     {
         $this->testDrives = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,7 +56,6 @@ class Car
     public function setModel(string $model): static
     {
         $this->model = $model;
-
         return $this;
     }
 
@@ -70,7 +67,6 @@ class Car
     public function setPrice(string $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -82,7 +78,6 @@ class Car
     public function setStock(int $stock): static
     {
         $this->stock = $stock;
-
         return $this;
     }
 
@@ -94,7 +89,6 @@ class Car
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -106,18 +100,29 @@ class Car
     public function setImage(?string $image): static
     {
         $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
 
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function removeCategory(Category $category): static
     {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
+        $this->categories->removeElement($category);
 
         return $this;
     }
@@ -143,7 +148,6 @@ class Car
     public function removeTestDrive(TestDrive $testDrive): static
     {
         if ($this->testDrives->removeElement($testDrive)) {
-            // set the owning side to null (unless already changed)
             if ($testDrive->getCar() === $this) {
                 $testDrive->setCar(null);
             }
