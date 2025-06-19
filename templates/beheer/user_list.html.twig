@@ -23,15 +23,16 @@
                     <td>{{ user.roles[0] }}</td>
                     <td>
 
-                        <form method="post" action="{{ path('beheer_user_change_role', {id: user.id}) }}">
+                        <form method="post" action="{{ path('beheer_user_change_role', {id: user.id}) }}" style="display:inline-block;">
                             <select name="role" class="form-select form-select-sm d-inline w-auto">
                                 <option value="ROLE_BEHEERDER" {{ user.roles[0] == 'ROLE_BEHEERDER' ? 'selected' : '' }}>Beheerder</option>
                                 <option value="ROLE_MEDEWERKER" {{ user.roles[0] == 'ROLE_MEDEWERKER' ? 'selected' : '' }}>Medewerker</option>
                                 <option value="ROLE_KLANT" {{ user.roles[0] == 'ROLE_KLANT' ? 'selected' : '' }}>Klant</option>
                             </select>
-                        </form>
-                        <form method="post" action="{{ path('beheer_user_delete', { id: user.id }) }}" style="display:inline-block;" onsubmit="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');">
                             <button class="btn btn-sm btn-primary">Opslaan</button>
+                        </form>
+
+                        <form method="post" action="{{ path('beheer_user_delete', { id: user.id }) }}" style="display:inline-block;" onsubmit="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete-user-' ~ user.id) }}">
                             <button class="btn btn-sm btn-danger">Verwijder</button>
                         </form>

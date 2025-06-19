@@ -47,6 +47,9 @@
             </a>
         </div>
         <nav>
+            {% if is_granted('ROLE_MEDEWERKER') %}
+                <a href="{{ path('app_contact_requests') }}">Contactaanvragen</a>
+            {% endif %}
             {% if is_granted('ROLE_BEHEERDER') %}
                 <a href="{{ path('beheer_user_list') }}">Gebruikersbeheer</a>
             {% endif %}

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contactaanvragen{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Contactaanvragen</h1>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped align-middle">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Gebruiker</th>
+                    <th scope="col">Onderwerp</th>
+                    <th scope="col">Bericht</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Verwijder</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for req in requests %}
+                    <tr>
+                        <td>{{ req.id }}</td>
+                        <td>{{ req.user.email }}</td>
+                        <td>{{ req.subject }}</td>
+                        <td>{{ req.message }}</td>
+                        <td>
+                            <span class="badge
+                                {% if req.status == 'nieuw' %}
+                                    bg-warning text-dark
+                                {% elseif req.status == 'beantwoord' %}
+                                    bg-success
+                                {% else %}
+                                    bg-secondary
+                                {% endif %}
+                            ">
+                                {{ req.status|capitalize }}
+                            </span>
+                        </td>
+                        <td>{{ req.createdAt|date('Y-m-d H:i') }}</td>
+                        <td>
+                            <form method="post" action="{{ path('contact_request_delete', { id: req.id }) }}" onsubmit="return confirm('Weet je zeker dat je dit verzoek wilt verwijderen?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-request-' ~ req.id) }}">
+                                <button class="btn btn-sm btn-danger">Verwijder</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Geen contactverzoeken gevonden.</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

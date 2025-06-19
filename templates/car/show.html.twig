@@ -12,7 +12,11 @@
 
         <p><strong>Prijs:</strong> €{{ car.price }}</p>
         <p><strong>Voorraad:</strong> {{ car.stock }}</p>
-        <p><strong>Categorie:</strong> {{ car.category.name }}</p>
+        <p><strong>Categorie:</strong>
+            {% for category in car.categories %}
+                {{ category.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
         <p><strong>Beschrijving:</strong><br>{{ car.description|nl2br }}</p>
 
         <a href="{{ path('app_car_index') }}" class="btn" style="margin-top: 20px; background:#6c757d; color:white; padding:8px 16px;">⬅️ Terug naar overzicht</a>

@@ -42,10 +42,35 @@ class ContactController extends AbstractController
                $this->addFlash('success', 'Bedankt voor uw bericht. We nemen spoedig contact met u op.');
                return $this->redirectToRoute('app_contact');
            }
+
        }
+
 
         return $this->render('contact/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/contact/requests', name: 'app_contact_requests')]
+    public function list(EntityManagerInterface $em): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_MEDEWERKER');
+
+        $requests = $em->getRepository(ContactRequest::class)->findBy([], ['createdAt' => 'DESC']);
+
+        return $this->render('contact/requests.html.twig', [
+            'requests' => $requests,
+        ]);
+    }
+    #[Route('/contact/delete/{id}', name: 'contact_request_delete', methods: ['POST'])]
+    public function delete(Request $request, ContactRequest $contactRequest, EntityManagerInterface $em): Response
+    {
+        if ($this->isCsrfTokenValid('delete-request-' . $contactRequest->getId(), $request->request->get('_token'))) {
+            $em->remove($contactRequest);
+            $em->flush();
+
+            $this->addFlash('success', 'Contactverzoek verwijderd.');
+        }
+
+        return $this->redirectToRoute('app_contact_requests');
     }
 }
