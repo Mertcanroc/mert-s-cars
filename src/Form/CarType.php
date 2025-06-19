@@ -35,8 +35,8 @@ class CarType extends AbstractType
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true, // set to false if you want a dropdown instead of checkboxes
+                'multiple' => true, // zorgt ervoor dat je meerdere categorieen kan selecteren
+                'expanded' => true,
             ])
 
         ;

@@ -45,16 +45,16 @@ security:
         - { path: ^/car/\d+, roles: ROLE_BEHEERDER, methods: [ DELETE ] }
         - { path: ^/admin, roles: ROLE_BEHEERDER }
 
-        # Appointment booking page — only logged-in users
+        # Voor gebruikers
         - { path: ^/afspraak$, roles: ROLE_USER }
 
         # Admin beheer (approve/reject) — beheerder only
         - { path: ^/beheer/afspraken, roles: ROLE_BEHEERDER }
 
-        # Public schedule view — accessible to everyone
+        # Voor iedereen
         - { path: ^/afspraak/schedule, roles: PUBLIC_ACCESS }
 
-        # Publicly accessible pages (optional)
+        # Ook voor iedereen
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: PUBLIC_ACCESS }

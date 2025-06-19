@@ -13,14 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/afspraak')]
-#[IsGranted('ROLE_USER')] // Alleen voor ingelogde gebruikers met ROLE_USER
+#[IsGranted('ROLE_USER')]
 class AppointmentController extends AbstractController
 {
     #[Route('', name: 'app_appointment_book')]
     public function book(Request $request, EntityManagerInterface $em): Response
     {
         $appointment = new Appointment();
-        $appointment->setDate(new \DateTime()); // Prefill with today by default
+        $appointment->setDate(new \DateTime()); // vervul met vandaag (default)
         $form = $this->createForm(AppointmentTypeFormType::class, $appointment);
 
         $form->handleRequest($request);
