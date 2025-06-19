@@ -20,7 +20,7 @@ class CarController extends AbstractController
     #[Route('/', name: 'app_car_index', methods: ['GET'])]
     public function index(Request $request, CarRepository $carRepository, EntityManagerInterface $entityManager): Response
     {
-        $filter = $request->query->get('category');
+        $filter = $request->query->get('category'); //haalt de waarde op van een query parameter (categorie)
 
         if ($filter) {
             $cars = $entityManager->createQuery(
