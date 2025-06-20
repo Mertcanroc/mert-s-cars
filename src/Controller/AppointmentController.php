@@ -49,7 +49,7 @@ class AppointmentController extends AbstractController
                 $startDateTime,
                 $endDateTime
             );
-
+// flash messages voor errors en successes
             if (count($existing) > 0) {
                 $this->addFlash('error', 'Deze tijd is al gereserveerd. Kies een andere tijd.');
             } else {
@@ -74,21 +74,21 @@ class AppointmentController extends AbstractController
     public function schedule(EntityManagerInterface $em): Response
     {
         // Start van de week (maandag)
-        $startOfWeek = (new \DateTime())->modify('monday this week')->setTime(0,0);
+        $startOfWeek = (new \DateTime())->modify('monday this week')->setTime(0,0); //object van datetime en word naar dit week gezet door mondaythisweek
         // Einde van de week (zondag)
         $endOfWeek = (clone $startOfWeek)->modify('+6 days')->setTime(23,59,59);
 
-        $appointments = $em->getRepository(Appointment::class)->createQueryBuilder('a')
-            ->where('a.status = :status')
-            ->andWhere('a.startTime BETWEEN :start AND :end')
-            ->setParameters([
+        $appointments = $em->getRepository(Appointment::class)->createQueryBuilder('a') //allias voor appointment
+            ->where('a.status = :status') // filtert op alleen afspraken met een bepaalde status.
+            ->andWhere('a.startTime BETWEEN :start AND :end') //filtert op afspraken die binnen deze week vallen.
+            ->setParameters([ //vult de waardes in
                 'status' => Appointment::STATUS_APPROVED,
                 'start' => $startOfWeek,
                 'end' => $endOfWeek,
             ])
             ->orderBy('a.startTime', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult(); //voert query uit en geeft een lijst van Appointment objecten terug.
 
         return $this->render('appointment/schedule.html.twig', [
             'appointments' => $appointments,
