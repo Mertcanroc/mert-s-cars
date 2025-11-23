@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nieuwsbrief Inschrijving{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Schrijf je in voor onze nieuwsbrief</h2>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary mt-2">Inschrijven</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

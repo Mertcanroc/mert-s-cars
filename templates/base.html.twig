@@ -38,7 +38,15 @@
                 background-color: #9c47ea;
                 color: #F5F5F5;
             }
+        .newsletter-link {
+            color: #9c47ea;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
 
+        .newsletter-link:hover {
+            color: darkmagenta;
+        }
     </style>
     <div class="navbar">
         <div class="logo">
@@ -70,7 +78,13 @@
 
     <footer class="footer">
         <p>ROC Mondriaan Brasserskade  |  Mertscars@gmail.com  |  +31 6 15838335</p>
-        <a href="#">Schrijf je in voor onze nieuwsbrief</a><br>
+        <div class="newsletter-box">
+            <h5>
+                <a href="{{ path('newsletter_subscribe') }}" class="newsletter-link">
+                    Schrijf je in voor onze nieuwsbrief
+                </a>
+            </h5>
+        </div>
         <small>© 2025 BMW Nederland B.V. Alle rechten voorbehouden. (colofon)</small>
     </footer>
         {% block body %}
