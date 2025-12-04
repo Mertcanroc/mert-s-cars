@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin Appointments{% endblock %}
+
+{% block body %}
+    {% for appointment in appointments %}
+        <div>
+            <strong>{{ appointment.user.email }}</strong> - {{ appointment.appointmentType }} on {{ appointment.startTime|date('d-m-Y H:i') }}
+            <a href="{{ path('admin_appointment_approve', {id: appointment.id}) }}">Approve</a>
+            <a href="{{ path('admin_appointment_reject', {id: appointment.id}) }}">Reject</a>
+        </div>
+    {% else %}
+        <p>No pending appointments.</p>
+    {% endfor %}
+    <a href="{{ path('app_appointment_book') }}" class="btn bg-success mt-5">Back to Appointments</a>
+{% endblock %}

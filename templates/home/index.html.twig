@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welkom bij Mert's BMW's{% endblock %}
+{% block title %}Welcome to Mert's BMW's{% endblock %}
 
 {% block body %}
     <style>
@@ -56,22 +56,12 @@
         .btn1:hover {
             background-color: darkmagenta;
         }
-
-
-
-
     </style>
 
-
-
-
-
     <div class="main-banner text-light">
-        <h1>Welkom bij Mert's BMW's</h1>
-        <p class="mt-5">Ontdek de ultieme rijervaring met onze topklasse BMW's – zorgvuldig geselecteerd voor de echte liefhebber.</p>
-        <a href="{{ path('app_car_index', {'category': 'BMW M'}) }}" class="btn btn1">Bekijk onze sportiefste modellen</a>
+        <h1>Welcome to Mert's BMW's</h1>
+        <p class="mt-5">Discover the ultimate driving experience with our top-class BMWs – carefully selected for the true enthusiast.</p>
+        <a href="{{ path('app_car_index', {'category': 'BMW M'}) }}" class="btn btn1">View our sportiest models</a>
     </div>
-
-
 
 {% endblock %}

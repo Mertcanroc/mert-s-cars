@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2025 at 09:55 AM
+-- Generation Time: Dec 04, 2025 at 03:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,12 +24,40 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `appointment`
+--
+
+CREATE TABLE `appointment` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `appointment_type` varchar(255) NOT NULL,
+  `start_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `appointment`
+--
+
+INSERT INTO `appointment` (`id`, `user_id`, `appointment_type`, `start_time`, `end_time`, `created_at`, `status`, `date`) VALUES
+(20, 1, 'Auto aanschaf afspraak', '2025-06-18 13:00:00', '2025-06-18 14:00:00', '2025-06-17 17:14:36', 'approved', '2025-06-18'),
+(21, 1, 'Auto aanschaf afspraak', '2025-06-19 17:00:00', '2025-06-19 18:00:00', '2025-06-19 16:08:35', 'approved', '2025-06-19'),
+(22, 1, 'Auto aanschaf afspraak', '2025-11-19 23:00:00', '2025-11-19 00:00:00', '2025-11-19 22:18:48', 'approved', '2025-11-19'),
+(23, 1, 'Auto aanschaf afspraak', '2025-11-20 23:00:00', '2025-11-20 00:00:00', '2025-11-19 22:19:59', 'approved', '2025-11-20'),
+(24, 1, 'Auto aanschaf afspraak', '2025-11-20 13:00:00', '2025-11-20 14:00:00', '2025-11-19 22:20:23', 'approved', '2025-11-20'),
+(25, 1, 'Auto aanschaf afspraak', '2025-12-05 10:30:00', '2025-12-05 11:30:00', '2025-12-04 11:24:40', 'approved', '2025-12-05');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `car`
 --
 
 CREATE TABLE `car` (
   `id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
   `model` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `stock` int(11) NOT NULL,
@@ -41,11 +69,44 @@ CREATE TABLE `car` (
 -- Dumping data for table `car`
 --
 
-INSERT INTO `car` (`id`, `category_id`, `model`, `price`, `stock`, `description`, `image`) VALUES
-(1, 3, 'bmw m3', 555.00, 2, 'eddd', '683d93c0c3bd8.jpg'),
-(2, 2, 'bmw m5', 555.00, 3, 'dddd', '683d93e0b2dbb.jpg'),
-(5, 3, 'bmw m3', 555.00, 2, 'fddd', '683d991b16e56.jpg'),
-(6, 1, 'dd', 444.00, 2, 'ddd', NULL);
+INSERT INTO `car` (`id`, `model`, `price`, `stock`, `description`, `image`) VALUES
+(1, 'BMW M2 CS Coupé', 135200.00, 16, 'Puur racegevoel in een compact formaat. Talrijke technologieën uit de motorsport verhogen de precisie en rijdynamiek. \r\n\r\nMax. vermogen: 390 kW (530 pk)\r\n\r\nKoppel: 650 Nm\r\n\r\n0–100 km/u: 3,8 s\r\n\r\nTopsnelheid: 302 km/u', '684585671afe3.png'),
+(2, 'BMW M3 Coupé', 125000.00, 15, 'M-typische performance, Innovatieve technologieën en een interessant design: de 3 Serie M Sedans laten in elk opzicht zien hoe dicht ze bij de motorsport staan.\r\n\r\nVermogen: 390 kW (530 pk)\r\n\r\nKoppel: 650 Nm\r\n\r\n0-100km/u: 3.5 s\r\n\r\nTopsnelheid: 250 km/u', '6845848dc81ed.png'),
+(9, 'BMW M4 Coupé', 148200.00, 15, 'De M Coupé-modellenseries combineren een esthetische look met de markante M sportiviteit. Talrijke technologieën uit de motorsport verhogen de rijdynamiek.\r\n\r\nVermogen: 405 kW (551 pk)\r\n\r\nKoppel: 650 Nm\r\n\r\n0-100 km/h: 3.4 s\r\n\r\nTopsnelheid: 302 km/h', '6845886b99a1d.png'),
+(10, 'BMW M8 Cabrio', 213400.00, 15, 'De BMW M8 Competition Cabrio en BMW M8 Cabrio combineren het pure M DNA met superieure exclusiviteit – voor uitdagend rijplezier vol sportieve flair en luxe.\r\n\r\nVermogen: 441 kW (600 pk)\r\n\r\nTransmissie:\r\nAutomatische transmissie\r\n\r\n0-100 km/h: 3,4 s', '684589272cc1a.png'),
+(11, 'BMW M5 Limousine', 74530.00, 15, 'De zevende generatie van de BMW M5 Sedan brengt voor het eerst een Plug-in Hybride aandrijflijn naar de high performance executive sedan.\r\n\r\nVermogen: 535 kW (727 pk) \r\n\r\nKoppeling: 1.000 Nm \r\n\r\nTopsnelheid: 250 km/u', '684589d4f2c80.png'),
+(12, 'BMW X5M SUV', 232450.00, 15, 'De BMW X5 M Competition is vernieuwd en beschikt over nóg betere prestaties, uitstraling en digitale functionaliteiten. Het is het eerste high-performance model van BMW M uitgerust met een nieuwe V8 benzinemotor met 48V Mild Hybrid technologie.\r\n\r\nVermogen: 460Kw (625pk)\r\n\r\nKoppeling: 750 Nm\r\n\r\n0-100km/h: 3,9s', '684590b06409c.png'),
+(13, 'BMW I4 eDrive40', 89000.00, 15, 'Bij de BMW i4 eDrive40 zorgt voor een achterwielaandrijving en indrukwekkende sportiviteit. \r\n\r\nVermogen: 250 kW (340 pk) \r\n\r\nkoppel: 430 Nm voor \r\n\r\n0-100km/h: 5,6 sec\r\n\r\nTopsnelheid: 225km/h', '684aae1059bca.png'),
+(16, 'BMW M3', 125000.00, 2, 'ssd', '6853f29ed0b44.png'),
+(17, 'BMW IX 2', 124058.00, 10, 'Discover BMW iX2 - a small & sporty electric coupé SUV. Comfortable interior & range of up to 279 miles', '68542de829b2d.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `car_category`
+--
+
+CREATE TABLE `car_category` (
+  `car_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `car_category`
+--
+
+INSERT INTO `car_category` (`car_id`, `category_id`) VALUES
+(1, 3),
+(2, 3),
+(9, 3),
+(10, 3),
+(11, 3),
+(12, 2),
+(12, 3),
+(13, 1),
+(13, 2),
+(16, 3),
+(17, 2);
 
 -- --------------------------------------------------------
 
@@ -70,6 +131,28 @@ INSERT INTO `category` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contact_request`
+--
+
+CREATE TABLE `contact_request` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` longtext NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contact_request`
+--
+
+INSERT INTO `contact_request` (`id`, `user_id`, `subject`, `message`, `status`, `created_at`) VALUES
+(8, 7, 'Ik vind de login kleur niet mooi', 'Ik heb een bug ontdekt in de website', 'nieuw', '2025-06-19 17:28:51');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `doctrine_migration_versions`
 --
 
@@ -85,7 +168,29 @@ CREATE TABLE `doctrine_migration_versions` (
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20250531143457', '2025-05-31 16:35:04', 132),
-('DoctrineMigrations\\Version20250531143728', '2025-05-31 16:37:38', 19);
+('DoctrineMigrations\\Version20250531143728', '2025-05-31 16:37:38', 19),
+('DoctrineMigrations\\Version20250608093805', '2025-06-08 11:38:13', 156),
+('DoctrineMigrations\\Version20250609130321', '2025-06-09 15:03:26', 100),
+('DoctrineMigrations\\Version20250609134102', '2025-06-09 15:41:10', 8),
+('DoctrineMigrations\\Version20250613121106', '2025-06-13 14:24:09', 6),
+('DoctrineMigrations\\Version20250613122002', '2025-06-19 13:07:37', 2),
+('DoctrineMigrations\\Version20250613122225', '2025-06-19 13:08:25', 2),
+('DoctrineMigrations\\Version20250619110519', '2025-06-19 13:08:25', 129),
+('DoctrineMigrations\\Version20251123125724', '2025-11-23 13:57:32', 80);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message`
+--
+
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `message` longtext NOT NULL,
+  `bot_response` longtext NOT NULL,
+  `timestamp` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -102,6 +207,57 @@ CREATE TABLE `messenger_messages` (
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messenger_messages`
+--
+
+INSERT INTO `messenger_messages` (`id`, `body`, `headers`, `queue_name`, `created_at`, `available_at`, `delivered_at`) VALUES
+(3, 'O:36:\\\"Symfony\\\\Component\\\\Messenger\\\\Envelope\\\":2:{s:44:\\\"\\0Symfony\\\\Component\\\\Messenger\\\\Envelope\\0stamps\\\";a:1:{s:46:\\\"Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\\";a:1:{i:0;O:46:\\\"Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\\":1:{s:55:\\\"\\0Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\0busName\\\";s:21:\\\"messenger.bus.default\\\";}}}s:45:\\\"\\0Symfony\\\\Component\\\\Messenger\\\\Envelope\\0message\\\";O:51:\\\"Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\\":2:{s:60:\\\"\\0Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\0message\\\";O:28:\\\"Symfony\\\\Component\\\\Mime\\\\Email\\\":6:{i:0;N;i:1;N;i:2;s:2:\\\"kk\\\";i:3;s:5:\\\"utf-8\\\";i:4;a:0:{}i:5;a:2:{i:0;O:37:\\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\\":2:{s:46:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\0headers\\\";a:3:{s:4:\\\"from\\\";a:1:{i:0;O:47:\\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\\":5:{s:50:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\\";s:4:\\\"From\\\";s:56:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\\";i:76;s:50:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\\";N;s:53:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\\";s:5:\\\"utf-8\\\";s:58:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\0addresses\\\";a:1:{i:0;O:30:\\\"Symfony\\\\Component\\\\Mime\\\\Address\\\":2:{s:39:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0address\\\";s:22:\\\"no-reply@jouwdomein.nl\\\";s:36:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0name\\\";s:0:\\\"\\\";}}}}s:2:\\\"to\\\";a:1:{i:0;O:47:\\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\\":5:{s:50:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\\";s:2:\\\"To\\\";s:56:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\\";i:76;s:50:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\\";N;s:53:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\\";s:5:\\\"utf-8\\\";s:58:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\0addresses\\\";a:1:{i:0;O:30:\\\"Symfony\\\\Component\\\\Mime\\\\Address\\\":2:{s:39:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0address\\\";s:23:\\\"mertcan260207@gmail.com\\\";s:36:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0name\\\";s:0:\\\"\\\";}}}}s:7:\\\"subject\\\";a:1:{i:0;O:48:\\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\UnstructuredHeader\\\":5:{s:50:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\\";s:7:\\\"Subject\\\";s:56:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\\";i:76;s:50:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\\";N;s:53:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\\";s:5:\\\"utf-8\\\";s:55:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\UnstructuredHeader\\0value\\\";s:6:\\\"testtt\\\";}}}s:49:\\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\0lineLength\\\";i:76;}i:1;N;}}s:61:\\\"\\0Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\0envelope\\\";N;}}', '[]', 'default', '2025-12-04 10:31:39', '2025-12-04 10:31:39', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `newsletter_subscriber`
+--
+
+CREATE TABLE `newsletter_subscriber` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `newsletter_subscriber`
+--
+
+INSERT INTO `newsletter_subscriber` (`id`, `email`, `created_at`) VALUES
+(1, 'mertcan260207@gmail.com', '2025-11-23 22:17:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_drive`
+--
+
+CREATE TABLE `test_drive` (
+  `id` int(11) NOT NULL,
+  `car_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `date` date NOT NULL,
+  `time` time NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_drive`
+--
+
+INSERT INTO `test_drive` (`id`, `car_id`, `user_id`, `date`, `time`, `status`) VALUES
+(2, 1, 1, '2025-06-17', '13:00:00', 'approved'),
+(3, 1, 4, '2025-06-18', '15:00:00', 'pending'),
+(4, 1, 1, '2025-06-20', '18:50:00', 'pending'),
+(5, 1, 1, '2025-11-19', '10:30:00', 'pending');
 
 -- --------------------------------------------------------
 
@@ -121,18 +277,35 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
-(1, 'mertcan260207@gmail.com', '[\"ROLE_BEHEERDER\"]', '$2y$13$4sISeMVIZ40Fn/swytUi0.1Azu/TlvgX.A3hSFsAXBkF0RljHBdTu');
+(1, 'mertcan260207@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$4sISeMVIZ40Fn/swytUi0.1Azu/TlvgX.A3hSFsAXBkF0RljHBdTu'),
+(2, 'mert0546@gmail.com', '[\"ROLE_EMPLOYEE\"]', '$2y$13$IArFWKDMy6P9hLPp9itDZub0Q1j6Xp6R/Tqcz1FYcn.J6DhcY3VwC'),
+(4, 'gg@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$wDA6R2/Gy4182NUX35G5HuETXvp2wNLfD2Y9RPUv/aDW7KQWt30hC'),
+(7, 'medewerker@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$oQ2n7QZuXlfTNp4YA4YOousTzTHzYu8tCedXweixOuogxXL7K53AC');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `appointment`
+--
+ALTER TABLE `appointment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_FE38F844A76ED395` (`user_id`);
+
+--
 -- Indexes for table `car`
 --
 ALTER TABLE `car`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_773DE69D12469DE2` (`category_id`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `car_category`
+--
+ALTER TABLE `car_category`
+  ADD PRIMARY KEY (`car_id`,`category_id`),
+  ADD KEY `IDX_897A2CC5C3C6F69F` (`car_id`),
+  ADD KEY `IDX_897A2CC512469DE2` (`category_id`);
 
 --
 -- Indexes for table `category`
@@ -141,10 +314,24 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `contact_request`
+--
+ALTER TABLE `contact_request`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_A1B8AE1EA76ED395` (`user_id`);
+
+--
 -- Indexes for table `doctrine_migration_versions`
 --
 ALTER TABLE `doctrine_migration_versions`
   ADD PRIMARY KEY (`version`);
+
+--
+-- Indexes for table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_B6BD307FA76ED395` (`user_id`);
 
 --
 -- Indexes for table `messenger_messages`
@@ -154,6 +341,21 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
   ADD KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
+
+--
+-- Indexes for table `newsletter_subscriber`
+--
+ALTER TABLE `newsletter_subscriber`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_401562C3E7927C74` (`email`);
+
+--
+-- Indexes for table `test_drive`
+--
+ALTER TABLE `test_drive`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_63C35384C3C6F69F` (`car_id`),
+  ADD KEY `IDX_63C35384A76ED395` (`user_id`);
 
 --
 -- Indexes for table `user`
@@ -167,10 +369,16 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `appointment`
+--
+ALTER TABLE `appointment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
 -- AUTO_INCREMENT for table `car`
 --
 ALTER TABLE `car`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -179,26 +387,76 @@ ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `contact_request`
+--
+ALTER TABLE `contact_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT for table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `newsletter_subscriber`
+--
+ALTER TABLE `newsletter_subscriber`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `test_drive`
+--
+ALTER TABLE `test_drive`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `car`
+-- Constraints for table `appointment`
 --
-ALTER TABLE `car`
-  ADD CONSTRAINT `FK_773DE69D12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+ALTER TABLE `appointment`
+  ADD CONSTRAINT `FK_FE38F844A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `car_category`
+--
+ALTER TABLE `car_category`
+  ADD CONSTRAINT `FK_897A2CC512469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_897A2CC5C3C6F69F` FOREIGN KEY (`car_id`) REFERENCES `car` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `contact_request`
+--
+ALTER TABLE `contact_request`
+  ADD CONSTRAINT `FK_A1B8AE1EA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `FK_B6BD307FA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `test_drive`
+--
+ALTER TABLE `test_drive`
+  ADD CONSTRAINT `FK_63C35384A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `FK_63C35384C3C6F69F` FOREIGN KEY (`car_id`) REFERENCES `car` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

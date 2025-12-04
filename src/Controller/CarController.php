@@ -20,7 +20,8 @@ class CarController extends AbstractController
     #[Route('/', name: 'app_car_index', methods: ['GET'])]
     public function index(Request $request, CarRepository $carRepository, EntityManagerInterface $entityManager): Response
     {
-        $filter = $request->query->get('category'); //haalt de waarde op van een query parameter (categorie)
+        // get the value of a query parameter (category)
+        $filter = $request->query->get('category');
 
         if ($filter) {
             $cars = $entityManager->createQuery(
@@ -128,7 +129,8 @@ class CarController extends AbstractController
 
         return $this->redirectToRoute('app_car_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/car/{id}/proefrit', name: 'car_test_drive')]
+
+    #[Route('/car/{id}/test-drive', name: 'car_test_drive')]  // changed from /proefrit
     public function testDrive(
         Request $request,
         Car $car,
@@ -148,7 +150,8 @@ class CarController extends AbstractController
             $em->persist($testDrive);
             $em->flush();
 
-            $this->addFlash('success', 'Proefrit aangevraagd!');
+            // flash message translated
+            $this->addFlash('success', 'Test drive requested!');
             return $this->redirectToRoute('app_car_index');
         }
 

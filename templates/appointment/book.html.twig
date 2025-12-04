@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Afspraak maken{% endblock %}
+{% block title %}Book Appointment{% endblock %}
 
 {% block body %}
     <style>
@@ -19,7 +19,7 @@
             {% endfor %}
         {% endfor %}
 
-        <h1 class="mb-4">Maak een afspraak</h1>
+        <h1 class="mb-4">Book an Appointment</h1>
 
         {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
@@ -41,13 +41,13 @@
             {{ form_errors(form.startTime) }}
         </div>
 
-        <button type="submit" class="btn btn-primary">Boek afspraak</button>
-        <a href="{{ path('app_appointment_schedule') }}" class="btn btn-secondary ms-2">Bekijk schema</a>
+        <button type="submit" class="btn btn-primary">Book Appointment</button>
+        <a href="{{ path('app_appointment_schedule') }}" class="btn btn-secondary ms-2">View Schedule</a>
 
         {{ form_end(form) }}
 
-        {% if is_granted('ROLE_BEHEERDER') %}
-            <a href="{{ path('beheer_appointments_list') }}" class="btn bg-success mt-5" style="margin-right: 500px">Afspraken beheren</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin_appointments_list') }}" class="btn bg-success mt-5" style="margin-right: 500px">Manage Appointments</a>
         {% endif %}
     </div>
 

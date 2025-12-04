@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Controller\Admin;
 namespace App\Controller;
 
 use App\Entity\NewsletterSubscriber;
@@ -13,16 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/beheer/newsletter')]
+#[Route('/admin/newsletter')]
 class NewsletterAdminController extends AbstractController
 {
-    #[Route('/send', name: 'beheer_newsletter_send')]
+    #[Route('/send', name: 'admin_newsletter_send')]
     public function send(
         Request $request,
         EntityManagerInterface $em,
         MailerInterface $mailer
     ): Response {
-        $this->denyAccessUnlessGranted('ROLE_BEHEERDER');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createForm(NewsletterSendType::class);
         $form->handleRequest($request);
@@ -33,7 +32,7 @@ class NewsletterAdminController extends AbstractController
 
             foreach ($subscribers as $subscriber) {
                 $email = (new Email())
-                    ->from('no-reply@jouwdomein.nl')
+                    ->from('no-reply@yourdomain.com')
                     ->to($subscriber->getEmail())
                     ->subject($data['subject'])
                     ->html($data['content']);
@@ -41,22 +40,21 @@ class NewsletterAdminController extends AbstractController
                 $mailer->send($email);
             }
 
-            $this->addFlash('success', 'Nieuwsbrief verzonden!');
-            return $this->redirectToRoute('beheer_newsletter_send');
+            // Flash message translated
+            $this->addFlash('success', 'Newsletter sent!');
+            return $this->redirectToRoute('admin_newsletter_send');
         }
 
-        return $this->render('beheer/newsletter/send.html.twig', [
+        return $this->render('admin/newsletter/send.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
-
 }
 
-
-//hoe dit werkt: Maak een .env.local aan. Ga vervolgens naar je google gmail account, zorg dat 2FA aan staat
-//vervolgens maak je een app wachtwoord aan. Kopieer en plak die code in de .env.local na de : van je mail dus zo:
-// MAILER_DSN=smtp://jemail@gmail.com:agkxbgbnnvutcpwq@smtp.gmail.com:587?encryption=tls&auth_mode=login
-// vergeet niet je mail te laten subscriben, hierna kan je naar http://127.0.0.1:8000/beheer/newsletter/send en kan je
-// vervolgens een mail sturen om te testen. Na het versturen moet je via de terminal:
-// php bin/console messenger:consume async -vv om worker te draaien. Zodra de worker draait, zal hij de mails uit de database halen en versturen.
+// How this works: Create a .env.local file. Then go to your Google Gmail account and enable 2FA.
+// Next, create an app password and copy it into .env.local after MAILER_DSN, for example:
+// MAILER_DSN=smtp://youremail@gmail.com:yourapppassword@smtp.gmail.com:587?encryption=tls&auth_mode=login
+// Make sure your email is subscribed. Then visit http://127.0.0.1:8000/admin/newsletter/send
+// to send a test email. After sending, run in the terminal:
+// php bin/console messenger:consume async -vv to start the WORKER.
+// Once the worker is running, it will fetch and send emails from the database.

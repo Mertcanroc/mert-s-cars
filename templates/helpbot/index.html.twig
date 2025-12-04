@@ -82,29 +82,32 @@
     <div class="helpbot-container">
         <div class="helpbot-header">
             <img src="{{ asset('images/helpbot-icon.png') }}" alt="Bot Icon">
-            <h2>BMW helpbot</h2>
+            <h2>BMW Helpbot</h2>
         </div>
 
+        {# Display chat history #}
         {% for msg in messages %}
             <div class="chat-bubble">
-                <strong>🧑 Jij:</strong> {{ msg.message }}<br>
-                <strong>🤖 BMW bot:</strong> {{ msg.botResponse|raw }}
+                <strong>🧑 You:</strong> {{ msg.message }}<br>
+                <strong>🤖 BMW Bot:</strong> {{ msg.botResponse|raw }}
             </div>
         {% else %}
-            <p style="text-align:center;">Stel je eerste vraag aan de bot hieronder.</p>
+            <p style="text-align:center;">Ask your first question to the bot below.</p>
         {% endfor %}
 
+        {# Input form #}
         <div class="form-wrapper">
             {{ form_start(form) }}
-            {{ form_widget(form.message) }}
-            <button type="submit">Versturen</button>
+            {{ form_widget(form.message, { 'attr': { 'placeholder': 'Type your question...' } }) }}
+            <button type="submit">Send</button>
             {{ form_end(form) }}
         </div>
     </div>
+
+    {# Clear chat history on page unload #}
     <script>
         window.addEventListener('beforeunload', function () {
             navigator.sendBeacon('{{ path('helpbot_clear') }}');
         });
     </script>
-
 {% endblock %}

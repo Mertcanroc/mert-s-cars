@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Car;
-use App\Entity\category;
+use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -35,11 +35,9 @@ class CarType extends AbstractType
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
-                'multiple' => true, // zorgt ervoor dat je meerdere categorieen kan selecteren
+                'multiple' => true, // allows selecting multiple categories
                 'expanded' => true,
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

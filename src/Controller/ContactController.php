@@ -19,7 +19,7 @@ class ContactController extends AbstractController
 
         // Set createdAt and default status
         $contactRequest->setCreatedAt(new \DateTimeImmutable());
-        $contactRequest->setStatus('nieuw');
+        $contactRequest->setStatus('new');
 
         // Set logged in user if available
         if ($this->getUser()) {
@@ -29,31 +29,32 @@ class ContactController extends AbstractController
         $form = $this->createForm(ContactRequestType::class, $contactRequest);
         $form->handleRequest($request);
 
-       if ($form->isSubmitted()) {
-           if (!$this->getUser()) {
-               $this->addFlash('danger', 'U moet ingelogd zijn of een account aanmaken om een contactverzoek te sturen.');
-               return $this->redirectToRoute('app_contact');
+        if ($form->isSubmitted()) {
+            if (!$this->getUser()) {
+                // Flash message translated
+                $this->addFlash('danger', 'You must be logged in or create an account to send a contact request.');
+                return $this->redirectToRoute('app_contact');
 
-           } elseif ($form->isValid()) {
-               $contactRequest->setUser($this->getUser());
-               $em->persist($contactRequest);
-               $em->flush();
+            } elseif ($form->isValid()) {
+                $contactRequest->setUser($this->getUser());
+                $em->persist($contactRequest);
+                $em->flush();
 
-               $this->addFlash('success', 'Bedankt voor uw bericht. We nemen spoedig contact met u op.');
-               return $this->redirectToRoute('app_contact');
-           }
-
-       }
-
+                // Flash message translated
+                $this->addFlash('success', 'Thank you for your message. We will contact you shortly.');
+                return $this->redirectToRoute('app_contact');
+            }
+        }
 
         return $this->render('contact/index.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
     #[Route('/contact/requests', name: 'app_contact_requests')]
     public function list(EntityManagerInterface $em): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_MEDEWERKER');
+        $this->denyAccessUnlessGranted('ROLE_EMPLOYEE');
 
         $requests = $em->getRepository(ContactRequest::class)->findBy([], ['createdAt' => 'DESC']);
 
@@ -61,6 +62,7 @@ class ContactController extends AbstractController
             'requests' => $requests,
         ]);
     }
+
     #[Route('/contact/delete/{id}', name: 'contact_request_delete', methods: ['POST'])]
     public function delete(Request $request, ContactRequest $contactRequest, EntityManagerInterface $em): Response
     {
@@ -68,7 +70,8 @@ class ContactController extends AbstractController
             $em->remove($contactRequest);
             $em->flush();
 
-            $this->addFlash('success', 'Contactverzoek verwijderd.');
+            // Flash message translated
+            $this->addFlash('success', 'Contact request deleted.');
         }
 
         return $this->redirectToRoute('app_contact_requests');

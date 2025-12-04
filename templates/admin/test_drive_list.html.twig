@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Beheer Proefritten{% endblock %}
+{% block title %}Admin Test Drives{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
-        <h1>Proefrittenbeheer</h1>
+        <h1>Test Drives Admin</h1>
 
         <table class="table table-bordered table-dark">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Gebruiker</th>
-                <th>Auto</th>
-                <th>Datum</th>
-                <th>Tijd</th>
+                <th>User</th>
+                <th>Car</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Status</th>
             </tr>
             </thead>
@@ -21,19 +21,19 @@
             {% for drive in testDrives %}
                 <tr>
                     <td>{{ drive.id }}</td>
-                    <td>{{ drive.user ? drive.user.email : 'Onbekend' }}</td>
-                    <td>{{ drive.car ? drive.car.model : 'Onbekend' }}</td>
+                    <td>{{ drive.user ? drive.user.email : 'Unknown' }}</td>
+                    <td>{{ drive.car ? drive.car.model : 'Unknown' }}</td>
                     <td>{{ drive.date|date('Y-m-d') }}</td>
                     <td>{{ drive.time|date('H:i') }}</td>
                     <td>{{ drive.status }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6">Geen proefritten gevonden.</td>
+                    <td colspan="6">No test drives found.</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <p>Approve/deny via database</p>
+        <p>Approve/deny via the database.</p>
     </div>
 {% endblock %}

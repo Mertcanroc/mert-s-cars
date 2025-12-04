@@ -14,10 +14,10 @@ class NewsletterSendType extends AbstractType
     {
         $builder
             ->add('subject', TextType::class, [
-                'label' => 'Onderwerp',
+                'label' => 'Subject',
             ])
             ->add('content', TextareaType::class, [
-                'label' => 'Inhoud (HTML toegestaan)',
+                'label' => 'Content',
                 'attr' => ['rows' => 10],
             ]);
     }

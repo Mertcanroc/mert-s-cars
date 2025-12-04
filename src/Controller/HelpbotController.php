@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Entity\Message;
@@ -32,13 +31,13 @@ class HelpbotController extends AbstractController
 
             // Simple auto-reply logic
             if (str_contains($userInput, 'contact')) {
-                $reply = 'U kunt contact opnemen via <a href="/contact">onze contactpagina</a>.';
+                $reply = 'You can contact us via <a href="/contact">our contact page</a>.';
             } elseif (str_contains($userInput, 'modellen') || str_contains($userInput, 'autos')) {
-                $reply = 'Bekijk al onze modellen via <a href="/car">de modellenpagina</a>.';
+                $reply = 'Check out all our models on the <a href="/car">models page</a>.';
             } elseif (str_contains($userInput, 'afspraak')) {
-                $reply = 'Maak een afspraak via ons afsprakenformulier (nog niet beschikbaar).';
+                $reply = 'Make an appointment via our appointment form (not yet available).';
             } else {
-                $reply = 'Dank voor uw vraag. Wij nemen spoedig contact met u op of bezoek onze <a href="/faq">FAQ</a>.';
+                $reply = 'Thanks for your question. We will contact you shortly or visit our <a href="/faq">FAQ</a>.';
             }
 
             $message->setBotResponse($reply);
@@ -56,6 +55,7 @@ class HelpbotController extends AbstractController
             'messages' => $messages,
         ]);
     }
+
     #[Route('/helpbot/clear', name: 'helpbot_clear', methods: ['POST'])]
     public function clearMessages(EntityManagerInterface $em): Response
     {

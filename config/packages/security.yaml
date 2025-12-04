@@ -4,7 +4,6 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
                 class: App\Entity\User
@@ -35,26 +34,25 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+
     access_control:
         # Existing entries...
-        - { path: ^/beheer/gebruikers, roles: ROLE_BEHEERDER }
-        - { path: ^/car/new, roles: ROLE_BEHEERDER }
-        - { path: ^/car/\d+/edit, roles: ROLE_BEHEERDER }
-        - { path: ^/car/\d+, roles: ROLE_BEHEERDER, methods: [ DELETE ] }
-        - { path: ^/admin, roles: ROLE_BEHEERDER }
+        - { path: ^/admin/gebruikers, roles: ROLE_ADMIN }
+        - { path: ^/car/new, roles: ROLE_ADMIN }
+        - { path: ^/car/\d+/edit, roles: ROLE_ADMIN }
+        - { path: ^/car/\d+, roles: ROLE_ADMIN, methods: [ DELETE ] }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
-        # Voor gebruikers
+        # for users
         - { path: ^/afspraak$, roles: ROLE_USER }
 
-        # Admin beheer (approve/reject) — beheerder only
-        - { path: ^/beheer/afspraken, roles: ROLE_BEHEERDER }
+        # Admin panel approve / reject
+        - { path: ^/admin/afspraken, roles: ROLE_ADMIN }
 
-        # Voor iedereen
+        # for everyone
         - { path: ^/afspraak/schedule, roles: PUBLIC_ACCESS }
 
-        # Ook voor iedereen
+        # Also for everyone
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: PUBLIC_ACCESS }

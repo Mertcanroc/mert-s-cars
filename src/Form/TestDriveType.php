@@ -15,12 +15,12 @@ class TestDriveType extends AbstractType
         $builder
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Datum',
+                'label' => 'Date',
                 'html5' => true,
             ])
             ->add('time', TimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Tijd',
+                'label' => 'Time',
                 'input' => 'datetime',
                 'html5' => true,
             ]);

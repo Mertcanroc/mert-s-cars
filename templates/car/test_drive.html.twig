@@ -1,22 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Proefrit aanvragen{% endblock %}
+{% block title %}Request a Test Drive{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
-        <h1>Plan een proefrit met {{ car.model }}</h1>
+        <h1>Schedule a test drive with {{ car.model }}</h1>
+
         {{ form_start(form) }}
         {{ form_row(form.date) }}
         {{ form_row(form.time) }}
-        <button class="btn btn-primary mb-3 mt-3">Versturen</button>
+        <button class="btn btn-primary mb-3 mt-3">Submit</button>
         {{ form_end(form) }}
-        {% if is_granted('ROLE_BEHEERDER') %}
-            <a href="{{ path('beheer_test_drive_list') }}" class="btn btn-sm bg-success">Proefritten beheren</a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin_test_drive_list') }}" class="btn btn-sm bg-success">Manage Test Drives</a>
         {% endif %}
 
-        <h2>Belangerijk om te weten</h2>
-        <p>Wij zijn als garage beschikbaar vanaf:
-        Maandag T/M Vrijdag: 10:00-18:00 dus plan je proefrit tussen deze tijden.</p>
+        <h2>Important Information</h2>
+        <p>Our garage is available from Monday to Friday, 10:00–18:00. Please schedule your test drive within these hours.</p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -32,6 +33,4 @@
             });
         });
     </script>
-
-
 {% endblock %}

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/afspraak')]
+#[Route('/appointment')]  // changed from /afspraak to English
 #[IsGranted('ROLE_USER')]
 class AppointmentController extends AbstractController
 {
@@ -20,7 +20,7 @@ class AppointmentController extends AbstractController
     public function book(Request $request, EntityManagerInterface $em): Response
     {
         $appointment = new Appointment();
-        $appointment->setDate(new \DateTime()); // vervul met vandaag (default)
+        $appointment->setDate(new \DateTime()); // fill it with today (default)
         $form = $this->createForm(AppointmentTypeFormType::class, $appointment);
 
         $form->handleRequest($request);
@@ -28,30 +28,29 @@ class AppointmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $appointment = $form->getData();
 
-            // Start- en eindtijd worden direct uit het formulier gehaald
             $startDateTime = $appointment->getStartTime();
 
             if (!$appointment->getDate()) {
-                $appointment->setDate(new \DateTime()); // Fallback if user left it empty
+                $appointment->setDate(new \DateTime()); // Fallback if empty
             }
 
-            // Bepaal duur op basis van type afspraak
             $duration = Appointment::APPOINTMENT_DURATIONS[$appointment->getAppointmentType()] ?? 60;
             $endDateTime = (clone $startDateTime)->modify("+{$duration} minutes");
-            // $combinedStartDate = date('Y-m-d H:i:s', strtotime("$appointment->getDate() $appointment->getStartTime()"));
+
             $combinedStartDate = new DateTime($appointment->getDate()->format('Y-m-d') .' ' .$appointment->getStartTime()->format('H:i:s'));
             $combinedEndDate = new DateTime($appointment->getDate()->format('Y-m-d') .' ' .$endDateTime->format('H:i:s'));
+
             $appointment->setStartTime($combinedStartDate);
             $appointment->setEndTime($combinedEndDate);
 
-            // Check voor overlappende afspraken
             $existing = $em->getRepository(Appointment::class)->findOverlappingAppointments(
                 $startDateTime,
                 $endDateTime
             );
-// flash messages voor errors en successes
+
+            // **FLASH MESSAGES UPDATED TO ENGLISH**
             if (count($existing) > 0) {
-                $this->addFlash('error', 'Deze tijd is al gereserveerd. Kies een andere tijd.');
+                $this->addFlash('error', 'This time slot is already reserved. Please choose another.');
             } else {
                 $appointment->setUser($this->getUser());
                 $appointment->setStatus(Appointment::STATUS_PENDING);
@@ -60,7 +59,7 @@ class AppointmentController extends AbstractController
                 $em->persist($appointment);
                 $em->flush();
 
-                $this->addFlash('success', 'Afspraak is ingediend en wacht op goedkeuring.');
+                $this->addFlash('success', 'Your appointment request has been submitted and is pending approval.');
                 return $this->redirectToRoute('app_appointment_book');
             }
         }
@@ -70,25 +69,23 @@ class AppointmentController extends AbstractController
         ]);
     }
 
-    #[Route('/schema', name: 'app_appointment_schedule')]
+    #[Route('/schedule', name: 'app_appointment_schedule')]
     public function schedule(EntityManagerInterface $em): Response
     {
-        // Start van de week (maandag)
-        $startOfWeek = (new \DateTime())->modify('monday this week')->setTime(0,0); //object van datetime en word naar dit week gezet door mondaythisweek
-        // Einde van de week (zondag)
+        $startOfWeek = (new \DateTime())->modify('monday this week')->setTime(0,0);
         $endOfWeek = (clone $startOfWeek)->modify('+6 days')->setTime(23,59,59);
 
-        $appointments = $em->getRepository(Appointment::class)->createQueryBuilder('a') //allias voor appointment
-            ->where('a.status = :status') // filtert op alleen afspraken met een bepaalde status.
-            ->andWhere('a.startTime BETWEEN :start AND :end') //filtert op afspraken die binnen deze week vallen.
-            ->setParameters([ //vult de waardes in
+        $appointments = $em->getRepository(Appointment::class)->createQueryBuilder('a')
+            ->where('a.status = :status')
+            ->andWhere('a.startTime BETWEEN :start AND :end')
+            ->setParameters([
                 'status' => Appointment::STATUS_APPROVED,
                 'start' => $startOfWeek,
                 'end' => $endOfWeek,
             ])
             ->orderBy('a.startTime', 'ASC')
             ->getQuery()
-            ->getResult(); //voert query uit en geeft een lijst van Appointment objecten terug.
+            ->getResult();
 
         return $this->render('appointment/schedule.html.twig', [
             'appointments' => $appointments,

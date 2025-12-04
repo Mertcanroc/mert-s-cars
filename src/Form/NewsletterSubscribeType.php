@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
-// <-- Belangrijk
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsletterSubscribeType extends AbstractType
@@ -19,7 +19,7 @@ class NewsletterSubscribeType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Uw e-mailadres',
+                    'placeholder' => 'Your email adress',
                     'class' => 'form-control'
                 ]
             ]);

@@ -35,8 +35,7 @@ class Car
     private Collection $testDrives;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'cars')]
-    private Collection $categories; //behoud de join tabel
-
+    private Collection $categories; //keep the join table
     public function __construct()
     {
         $this->testDrives = new ArrayCollection();

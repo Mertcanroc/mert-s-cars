@@ -1,27 +1,75 @@
-# Lege Symfony repository - Pas deze Readme aan!
+# Mert's BMWs Car garage
 
-Deze repo is leeg zodat je zelf snel met een repository kan werken. 
+**Version:** 1.0.0  
+**Stack:** Symfony 6, PHP 8.2, MySQL, Bootstrap 5
 
-Zorg ervoor dat je deze Readme aanpast.
+Description:
+This project was created for my final school assignment in year 2,
+where we were instructed to work in groups of three to build a complete website of our choice.
+The topic was very flexible, anything from a shoe retailer to a car garage.
 
-## Benodigdheden - Wat heb je geinstalleerd
-* Composer
-* Scoop
-* Symfony-CLI
+I chose to work on this project alone to challenge myself and grow further as a developer.
+Since I’m passionate about sporty vehicles, I decided to build a BMW themed car dealership website.
+This allowed me to combine my personal interests with my technical development.
 
-## Installatie
-Clone de repository naar jouw computer/ laptop/ device
+I received a 9/10 for this project. At the time, several features were missing or unstable,
+such as the newsletter system and the admin panel.
+I have since improved and expanded the project so I can publish it in my portfolio
+and showcase the functionalities I implemented.
 
-Open Powershell en ga naar de map van de repository
+Website Features:
+Browse BMW models
+Book appointments for test drives, maintenance, repairs, and upgrades
+Newsletter subscription
+Contact form
+Interactive BMW helpbot
 
-Kopieer het ```.env``` bestand naar ```.env.local```
+Admin Panel Features:
+User and role management
+Send newsletters
+Manage appointments
 
-Pas de juiste DATABASE_URL regel toe (en haal het # teken ervoor weg)
+Admin Login (for review):
+Email: adminpanel@gmail.com
+Password: admin123
 
-Maak de database aan die je gekozen hebt in de vorige regel (PHPMyAdmin of via symfony commando)
+> ⚠️ Note: This is version 1.0.0. Some features may still have bugs or glitches and will be polished in future versions.
 
-Type het commando ``composer install``
+---
 
-Type het commando ``symfony server:start``
+## Installation
+Installation
+1. Clone the repository
+   git clone https://github.com/YOUR_USERNAME/mertsbmw.git
+   cd mertsbmw
 
-### Happy Hunting!
+2. Install dependencies
+   composer install
+   npm install
+   npm run build
+
+3. Configure the environment variables
+Create a .env.local file:
+cp .env .env.local
+Then update the following values inside .env.local:
+DATABASE_URL="mysql://root:@127.0.0.1:3306/mertscars?serverVersion=10.4.32-MariaDB&charset=utf8mb4"
+MAILER_DSN=null://null
+
+4. Create an empty database
+Create the database (do not run migrations):
+php bin/console doctrine:database:create
+
+5. Import the SQL backup
+Inside the backups folder you will find a .sql file containing the database tables and demo data.
+Import it using phpMyAdmin (XAMPP):
+Open phpMyAdmin
+Select the empty mertscars database
+Go to Import
+Choose the .sql file
+Click Go
+
+6. Start the Symfony server
+   symfony server:start
+
+7. Visit the project
+   http://127.0.0.1:8000

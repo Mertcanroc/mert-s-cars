@@ -10,18 +10,18 @@
             <img src="{{ asset('uploads/' ~ car.image) }}" alt="{{ car.model }}" style="max-width:100%; margin-bottom: 20px;">
         {% endif %}
 
-        <p><strong>Prijs:</strong> €{{ car.price }}</p>
-        <p><strong>Voorraad:</strong> {{ car.stock }}</p>
-        <p><strong>Categorie:</strong>
+        <p><strong>Price:</strong> €{{ car.price }}</p>
+        <p><strong>Stock:</strong> {{ car.stock }}</p>
+        <p><strong>Category:</strong>
             {% for category in car.categories %}
                 {{ category.name }}{% if not loop.last %}, {% endif %}
             {% endfor %}
         </p>
-        <p><strong>Beschrijving:</strong><br>{{ car.description|nl2br }}</p>
+        <p><strong>Description:</strong><br>{{ car.description|nl2br }}</p>
 
-        <a href="{{ path('app_car_index') }}" class="btn" style="margin-top: 20px; background:#6c757d; color:white; padding:8px 16px;">⬅️ Terug naar overzicht</a>
+        <a href="{{ path('app_car_index') }}" class="btn" style="margin-top: 20px; background:#6c757d; color:white; padding:8px 16px;">⬅️ Back to catalog</a>
         <a href="{{ path('car_test_drive', {'id': car.id}) }}" class="btn btn-success mt-3">
-            Plan een proefrit
+            Schedule a Test Drive
         </a>
     </div>
 {% endblock %}

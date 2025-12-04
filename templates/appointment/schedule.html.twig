@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Schema afspraken{% endblock %}
+{% block title %}Appointment Schedule{% endblock %}
 
 {% block body %}
 
-    <h1>Week schema afspraken</h1>
+    <h1>Weekly Appointment Schedule</h1>
 
     <table border="1" style="border-collapse: collapse; width: 100%;">
         <thead>
         <tr>
-            <th>Uur</th>
+            <th>Hour</th>
             {% for i in 0..4 %}
                 {% set day = startOfWeek|date_modify("+" ~ i ~ " days") %}
                 <th>{{ day|date('D d-m') }}</th>
@@ -30,11 +30,11 @@
                             {% set start = appointment.startTime %}
                             {% set end = appointment.endTime %}
 
-                            {# Check of deze afspraak valt binnen deze dag en dit uur #}
+                            {# Check if this appointment falls within this day and hour #}
                             {% if start|date('Y-m-d') == day|date('Y-m-d')
                                 and start|date('H') == hour %}
 
-                                {# Bereken duur in uren #}
+                                {# Calculate duration in hours #}
                                 {% set duration = (end.getTimestamp() - start.getTimestamp()) / 3600 %}
 
                                 <div style="position: absolute; top: 0; left: 0;
@@ -52,5 +52,5 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('app_appointment_book') }}" class="btn mt-5">Ga terug naar afspraken</a>
+    <a href="{{ path('app_appointment_book') }}" class="btn mt-5">Back to Appointments</a>
 {% endblock %}

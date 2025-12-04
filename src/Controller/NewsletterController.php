@@ -19,7 +19,7 @@ class NewsletterController extends AbstractController
         EntityManagerInterface $em
     ): Response {
         $subscriber = new NewsletterSubscriber();
-        $subscriber->setCreatedAt(new \DateTimeImmutable()); // ✅ Voeg dit toe
+        $subscriber->setCreatedAt(new \DateTimeImmutable()); // ✅ Added this
 
         $form = $this->createForm(NewsletterSubscribeType::class, $subscriber);
         $form->handleRequest($request);
@@ -30,11 +30,13 @@ class NewsletterController extends AbstractController
                 ->findOneBy(['email' => $subscriber->getEmail()]);
 
             if ($existing) {
-                $this->addFlash('info', 'Je bent al ingeschreven.');
+                // Flash message translated
+                $this->addFlash('info', 'You are already subscribed.');
             } else {
                 $em->persist($subscriber);
                 $em->flush();
-                $this->addFlash('success', 'Je bent succesvol ingeschreven!');
+                // Flash message translated
+                $this->addFlash('success', 'You have successfully subscribed!');
             }
 
             return $this->redirectToRoute('app_home');

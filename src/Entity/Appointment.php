@@ -9,17 +9,20 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AppointmentRepository::class)]
 class Appointment
 {
-    public const TYPE_AUTO_AANSCHAF = 'Auto aanschaf afspraak';
-    public const TYPE_ONDERHOUD = 'Onderhoud';
-    public const TYPE_REPARATIE = 'Reparatie';
+    // Appointment type constants in English
+    public const TYPE_CAR_PURCHASE = 'Car purchase appointment';
+    public const TYPE_MAINTENANCE = 'Maintenance';
+    public const TYPE_REPAIR = 'Repair';
     public const TYPE_BMW_M_UPGRADE = 'BMW M upgrade';
 
     public const APPOINTMENT_DURATIONS = [
-        self::TYPE_AUTO_AANSCHAF => 60,   // minutes
-        self::TYPE_ONDERHOUD => 120,
-        self::TYPE_REPARATIE => 240,
+        self::TYPE_CAR_PURCHASE => 60,   // minutes
+        self::TYPE_MAINTENANCE => 120,
+        self::TYPE_REPAIR => 240,
         self::TYPE_BMW_M_UPGRADE => 360,
     ];
+
+    // Status constants
     public const STATUS_PENDING = 'pending';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REJECTED = 'rejected';
@@ -44,9 +47,9 @@ class Appointment
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
@@ -60,6 +63,7 @@ class Appointment
         $this->status = $status;
         return $this;
     }
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
@@ -70,7 +74,6 @@ class Appointment
         $this->date = $date;
         return $this;
     }
-
 
     public function getId(): ?int
     {
@@ -85,7 +88,6 @@ class Appointment
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -97,7 +99,6 @@ class Appointment
     public function setAppointmentType(string $appointmentType): static
     {
         $this->appointmentType = $appointmentType;
-
         return $this;
     }
 
@@ -109,7 +110,6 @@ class Appointment
     public function setStartTime(\DateTimeInterface $startTime): static
     {
         $this->startTime = $startTime;
-
         return $this;
     }
 
@@ -121,7 +121,6 @@ class Appointment
     public function setEndTime(\DateTimeInterface $endTime): static
     {
         $this->endTime = $endTime;
-
         return $this;
     }
 
@@ -133,7 +132,6 @@ class Appointment
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 }
