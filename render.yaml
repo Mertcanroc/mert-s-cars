@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: mert-s-cars
+    env: docker
+    plan: free
+    branch: mert
+    dockerCommand: null
+    buildCommand: null
+    startCommand: null
