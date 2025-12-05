@@ -20,8 +20,9 @@ COPY . /var/www/html/
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies (ignore platform requirements)
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/var
