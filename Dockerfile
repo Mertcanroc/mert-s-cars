@@ -20,8 +20,9 @@ COPY . /var/www/html/
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install PHP dependencies (ignore platform requirements)
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+# Allow Symfony Flex plugin and install PHP dependencies
+RUN composer config --no-plugins allow-plugins.symfony/flex true && \
+    composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 
 # Set permissions
